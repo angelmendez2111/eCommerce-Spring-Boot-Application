@@ -63,7 +63,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public ProductDTO getProductById(Long id) {
+    public ProductDTO getProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Product not found"));
         return productMapper.toDTO(product);
