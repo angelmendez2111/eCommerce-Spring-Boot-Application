@@ -22,12 +22,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotBlank
     @Email
     private String email;
-
     @NotBlank
+
     private String password;
 
     @Enumerated(EnumType.STRING)
