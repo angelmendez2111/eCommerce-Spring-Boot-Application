@@ -13,5 +13,4 @@ public class OrderItemDTO {
     private Integer quantity;
     @Positive
     private BigDecimal price;
-
 }

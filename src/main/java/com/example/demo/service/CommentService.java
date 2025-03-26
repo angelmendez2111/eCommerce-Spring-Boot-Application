@@ -18,14 +18,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-
     private final CommentRepository commentRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final CommentMapper commentMapper;
 
     public CommentDTO addComment(Long productId, Long userId, CommentDTO commentDTO){
-
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
         User user = userRepository.findById(userId)
@@ -40,9 +38,10 @@ public class CommentService {
     }
 
     public List<CommentDTO> getCommentsByProduct(Long productId){
-
         List<Comment> comments = commentRepository.findByProductId(productId);
-        return comments.stream().map(commentMapper::toDTO).collect(Collectors.toList());
+        return comments.stream()
+                .map(commentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
 }

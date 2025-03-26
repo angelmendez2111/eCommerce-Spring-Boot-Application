@@ -24,7 +24,6 @@ public interface OrderMapper {
     @Mapping(target = "productId", source = "product.id")
     OrderItemDTO toOrderItemDTO(OrderItem orderItem);
     @Mapping(target = "product.id", source = "productId")
-    @Mapping(target = "order", ignore = true)  // Ignorar la propiedad 'order'
     OrderItem toOrderItemEntity(OrderItemDTO orderItemDTO);
 
     List<OrderItemDTO> toOrderItemDTOs(List<OrderItem> orderItem);

@@ -10,20 +10,15 @@ import java.util.List;
 
 @Data
 public class ProductDTO {
-
     private Long id;
-
     @NotBlank(message = "Product name is required")
     private String name;
-
     @NotBlank(message = "Product description is required")
     private String description;
-
-    @Positive(message = "Can not be negative")
+    @Positive(message = "Cannot be negative")
     private BigDecimal price;
-    @PositiveOrZero(message = "Can not be negative")
+    @PositiveOrZero(message = "Cannot be negative")
     private Integer quantity;
-    private String image;
+    private String image; //add image
     private List<CommentDTO> comments;
-
 }
