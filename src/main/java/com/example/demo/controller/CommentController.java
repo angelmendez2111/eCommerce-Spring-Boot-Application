@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
 public class CommentController {
-
     private final CommentService commentService;
 
     @PostMapping("/product/{productId}")
@@ -25,7 +24,6 @@ public class CommentController {
     public ResponseEntity<CommentDTO> addComment(@PathVariable Long productId,
                                                  @AuthenticationPrincipal UserDetails userDetails,
                                                  @Valid @RequestBody CommentDTO commentDTO){
-        
         Long userId = ((User) userDetails).getId();
         return ResponseEntity.ok(commentService.addComment(productId, userId, commentDTO));
     }

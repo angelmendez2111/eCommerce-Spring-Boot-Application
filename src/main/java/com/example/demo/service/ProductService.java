@@ -23,31 +23,31 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
     private static final String UPLOAD_DIR = "src/main/resources/static/images/";
 
     @Transactional
-    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile image) throws IOException {
+    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile image) throws IOException{
         Product product = productMapper.toEntity(productDTO);
-        if (image != null && !image.isEmpty()) {
+        if(image != null && !image.isEmpty()){
             String fileName = saveImage(image);
-            product.setImage("/images/" + fileName);
+            product.setImage("/images/"+fileName);
         }
         Product savedProduct = productRepository.save(product);
         return productMapper.toDTO(savedProduct);
     }
 
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile image) throws IOException {
+    @Transactional
+    public ProductDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile image) throws IOException{
         Product existingProduct = productRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Product not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
         existingProduct.setName(productDTO.getName());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setPrice(productDTO.getPrice());
         existingProduct.setQuantity(productDTO.getQuantity());
-        if (image != null && !image.isEmpty()) {
+        if(image != null && !image.isEmpty()){
             String fileName = saveImage(image);
             existingProduct.setImage("/images/" + fileName);
         }
@@ -63,16 +63,15 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public ProductDTO getProduct(Long id) {
+    public ProductDTO getProduct(Long id){
         Product product = productRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Product not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
         return productMapper.toDTO(product);
     }
 
     public Page<ProductListDTO> getAllProducts(Pageable pageable) {
         return productRepository.findAllWithoutComments(pageable);
     }
-
     private String saveImage(MultipartFile image) throws  IOException{
         String fileName = UUID.randomUUID().toString()+"_"+image.getOriginalFilename();
         Path path = Paths.get(UPLOAD_DIR + fileName);
@@ -80,5 +79,4 @@ public class ProductService {
         Files.write(path, image.getBytes());
         return fileName;
     }
-
 }
